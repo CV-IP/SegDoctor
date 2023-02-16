@@ -2,7 +2,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from spixel import SpixelNet
+from model.spixel import SpixelNet
 
 from model.resnet import resnet50
 
