@@ -4,15 +4,10 @@ import datetime
 import numpy as np
 from tqdm import tqdm
 import albumentations as A
-from dataset import SegDataset, CityscapeDataset, BirdDataset
+from dataset import SegDataset, CityscapeDataset
 from metric import Evaluator
 from model.unet import UNet
 from model.unet_resnet import UNet_ResNet
-from model.unet_vgg import UNet_VGG16
-from model.pspnet import PSPNet
-from model.fpn import FPN
-from model.ccnet import CCNet
-from model.deeplabv3_plus import DeepLab
 from torch.nn import CrossEntropyLoss
 import torch.distributed as dist
 from torch.utils.data import DataLoader
@@ -24,9 +19,9 @@ warnings.filterwarnings("ignore")
 
 def get_train_transforms(args):
     return A.Compose([
-            # A.SmallestMaxSize(max_size=512, p=1),
-            # A.RandomCrop(height=512, width=512),
-            A.RandomCrop(height=512, width=1024),    # cityscape
+            # A.SmallestMaxSize(max_size=512, p=1),  # voc
+            # A.RandomCrop(height=512, width=512),   # voc
+            A.RandomCrop(height=512, width=1024),    # cityscapes
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
             A.Normalize(max_pixel_value=255.0, p=1.0),
@@ -35,8 +30,8 @@ def get_train_transforms(args):
 
 def get_val_transforms(args):
     return A.Compose([
-            # A.SmallestMaxSize(max_size=512, p=1),
-            A.Normalize(max_pixel_value=255.0, p=1.0),
+            # A.SmallestMaxSize(max_size=512, p=1),    # voc
+            A.Normalize(max_pixel_value=255.0, p=1.0), # cityscapes
             ToTensorV2(p=1.0),
         ], p=1.)
 
@@ -154,9 +149,6 @@ def main(args):
     train_dataset = CityscapeDataset(transforms=get_train_transforms(args), mode='train')
     val_dataset = CityscapeDataset(transforms=get_val_transforms(args), mode='val')
 
-    # train_dataset = BirdDataset(transforms=get_train_transforms(args), mode='train')
-    # val_dataset = BirdDataset(transforms=get_val_transforms(args), mode='val')
-
     if args.use_ddp:
         train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
         train_loader = DataLoader(train_dataset, batch_size=args.batch_size, sampler=train_sampler, shuffle=False, num_workers=4)
@@ -170,11 +162,6 @@ def main(args):
     # 初始化模型
     if args.use_ddp:
         # model = UNet_ResNet(num_classes=args.num_classes).to(device)
-        # model = UNet_VGG16(n_classes=args.num_classes).to(device)
-        # model = PSPNet(classes=args.num_classes).to(device)
-        model = DeepLab(num_classes=args.num_classes).to(device)
-        # model = FPN([2,4,5,3], num_classes=args.num_classes).to(device)
-        # model = CCNet(num_classes=args.num_classes).to(device)
 
         if args.sync_bn:
             model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
@@ -184,10 +171,9 @@ def main(args):
 
     # 优化器,学习率策略，损失函数
     if args.use_ddp:
-        # optimizer = torch.optim.Adam(model.module.parameters(), lr=args.lr)
         optimizer = torch.optim.SGD(model.module.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-3)
     else:
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-3)
 
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs * len(train_loader), eta_min=0)
     criterion = CrossEntropyLoss(ignore_index=255)
