@@ -33,7 +33,7 @@ VOCdevkit/
   ├── VOC2012
     ├── ImageSets/
     ├── JPEGImages/
-    └── SegnebtatuibsCkassAug/
+    └── SegmentationClassAug/
 ```
 
 The pretrained model [[百度网盘]](https://pan.baidu.com/s/1967fppZDAtRyIJ9HLM13Ag?pwd=dk9k).
