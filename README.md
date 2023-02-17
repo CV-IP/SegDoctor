@@ -36,7 +36,16 @@ VOCdevkit/
 
 ### Training
 
-```bash
+```bash   
+ CUDA_VISIBLE_DEVICES="0" torchrun \
+   --nproc_per_node=1 \
+   --master_port='29507' \
+     train_seg.py \
+   --use_ddp \
+   --sync_bn \
+   --num_classes 21 \
+   --batch_size 8 \
+
  CUDA_VISIBLE_DEVICES="0" torchrun \
    --nproc_per_node=1 \
    --master_port='29507' \
@@ -45,24 +54,15 @@ VOCdevkit/
    --sync_bn \
    --num_classes 21 \
    --batch_size 8 \
-   
- CUDA_VISIBLE_DEVICES="0" torchrun \
-   --nproc_per_node=1 \
-   --master_port='29507' \
-     train_seg.py \
-   --use_ddp \
-   --sync_bn \
-   --num_classes 21 \
-   --batch_size 8 \  
 # --------------------------------------------
 
 ```
 
-## How to integrate query teamwork into your model
+## How to integrate into your model
 
-The query teamwork contains three parts: scale-wise grouping, position constraint, and preference extraction.
+The segdoctor contains two parts: semantic category therapy, and regional boundary therapy.
 
-For details, you can refer to our code. Based on the source code of DAB-DETR / DN-DETR / DINO, every change in our code is clearly marked with "# qt ...". The changes involve main.py, [DABDETR.py,] *transformer.py, matcher.py and engine.py.
+For details, you can refer to our code. Reference *uet_resnet.py spixel.py* select appropriate features for semantic therapy and boundary therapy.
 
 ## LICENSE
 SegDoctor is released under the Apache 2.0 license. Please see the [LICENSE](LICENSE) file for more information.
