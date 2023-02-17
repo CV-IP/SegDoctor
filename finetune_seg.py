@@ -22,6 +22,7 @@ from spixel_loss import *
 
 def get_train_transforms(args):
     return A.Compose([
+            #A.RandomCrop(height=512, width=1024),    # cityscapes
             A.SmallestMaxSize(max_size=512, interpolation=1, always_apply=False, p=1),    # voc
             A.RandomCrop(height=512, width=512),                                          # voc
             A.HorizontalFlip(p=0.5),
