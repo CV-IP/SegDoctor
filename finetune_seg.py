@@ -12,7 +12,7 @@ from torch.nn import CrossEntropyLoss
 import torch.distributed as dist
 from torch.utils.data import DataLoader
 from albumentations.pytorch import ToTensorV2
-from util import set_seed, reduce_tensor, setup_for_distributed, link_loss, link_loss2, link_loss3
+from util import set_seed, reduce_tensor, setup_for_distributed, link_loss3
 import warnings
 import argparse
 warnings.filterwarnings("ignore")
