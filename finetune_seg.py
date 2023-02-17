@@ -22,9 +22,8 @@ from spixel_loss import *
 
 def get_train_transforms(args):
     return A.Compose([
-            # A.Resize(width=512, height=512, p=1),
-            A.SmallestMaxSize(max_size=512, interpolation=1, always_apply=False, p=1),
-            A.RandomCrop(height=512, width=512),
+            A.SmallestMaxSize(max_size=512, interpolation=1, always_apply=False, p=1),    # voc
+            A.RandomCrop(height=512, width=512),                                          # voc
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
             A.Normalize(max_pixel_value=255.0, p=1.0),
@@ -33,8 +32,7 @@ def get_train_transforms(args):
 
 def get_val_transforms(args):
     return A.Compose([
-            A.SmallestMaxSize(max_size=512, interpolation=1, always_apply=False, p=1),
-            # A.Resize(width=512, height=512, p=1),
+            A.SmallestMaxSize(max_size=512, interpolation=1, always_apply=False, p=1),   # voc
             A.Normalize(max_pixel_value=255.0, p=1.0),
             ToTensorV2(p=1.0),
         ], p=1.)
