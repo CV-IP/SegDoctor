@@ -25,15 +25,13 @@ Our experimental environment is `python 3.8 & pytorch 1.11.0+cu113`. We strongly
 ```
 
 ### Dataset
-[COCO2017](https://cocodataset.org/) is used to validate our method. The directory structure is as follows:
-
+[VOC2012] is used to validate our method ([百度网盘]( https://pan.baidu.com/s/1vkk3lMheUm6IjTXznlg7Ng?pwd=44mk). The directory structure is as follows: 
 ```
-COCODIR/
-  ├── train2017/
-  ├── val2017/
-  └── annotations/
-  	├── instances_train2017.json
-  	└── instances_val2017.json
+VOCdevkit/
+  ├── VOC2012
+    ├── ImageSets/
+    ├── JPEGImages/
+    └── SegnebtatuibsCkassAug/
 ```
 
 ### Evaluation
@@ -80,53 +78,24 @@ bash scripts/DINO_4scale_1stage_team_r50_e12_eval.sh /path/to/your/COCODIR /path
 In default, we divide the queries into three groups, with the proportion of 65%, 25%, and 15%, corresponding to relative scales of (0, 0.2], (0.2, 0.4], and (0.4, 1], respectively. `--q_splits` is to set the proportion of each group. `--matcher` has two options, `ori`(original HungarianMatcher) and `team`(TeamHungarianMatcher). If you want to change the responsible scale range of each group, you can modify matcher.py for Team-DAB-DETR and Team-DN-DETR or the config file for Team-DINO.
 
 ```bash
-# Team-DAB-DETR and Team-DN-DETR
-# multi-gpu (12-epoch setting / 1x setting)
-python -m torch.distributed.launch --nproc_per_node=2 main.py \
-  --coco_path /path/to/your/COCODIR \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --epochs 12 \
-  --lr_drop 8 \
-  --matcher team \
-  --q_splits 65 20 15
-  
-# multi-gpu (50-epoch setting)
-python -m torch.distributed.launch --nproc_per_node=2 main.py \
-  --coco_path /path/to/your/COCODIR \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --epochs 50 \
-  --lr_drop 40 \
-  --matcher team \
-  --q_splits 65 20 15
-  
-# single-gpu (12-epoch setting / 1x setting)
-python main.py \
-  --coco_path /path/to/your/COCODIR \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --epochs 12 \
-  --lr_drop 8 \
-  --matcher team \
-  --q_splits 65 20 15
-
-# single-gpu (50-epoch setting)
-python main.py \
-  --coco_path /path/to/your/COCODIR \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --epochs 50 \
-  --lr_drop 40 \
-  --matcher team \
-  --q_splits 65 20 15
-
+ CUDA_VISIBLE_DEVICES="0" torchrun \
+   --nproc_per_node=1 \
+   --master_port='29507' \
+     finetune_seg.py \
+   --use_ddp \
+   --sync_bn \
+   --num_classes 21 \
+   --batch_size 8 \
+   
+ CUDA_VISIBLE_DEVICES="0" torchrun \
+   --nproc_per_node=1 \
+   --master_port='29507' \
+     train_seg.py \
+   --use_ddp \
+   --sync_bn \
+   --num_classes 21 \
+   --batch_size 8 \  
 # --------------------------------------------
-
-# Team-DINO
-# You need to make config and .sh files in advance.
-# multi-gpu
-bash scripts/DINO_4scale_1stage_team_r50_e12.sh /path/to/your/COCODIR /path/to/your/output/dir
 
 ```
 
@@ -136,24 +105,8 @@ The query teamwork contains three parts: scale-wise grouping, position constrain
 
 For details, you can refer to our code. Based on the source code of DAB-DETR / DN-DETR / DINO, every change in our code is clearly marked with "# qt ...". The changes involve main.py, [DABDETR.py,] *transformer.py, matcher.py and engine.py.
 
-## Links
-
-Our Team DETR is based on the basic architecture of DAB-DETR and is flexible enough to be adapted to DAB-based DETRs.
-- **DAB-DETR: Dynamic Anchor Boxes are Better Queries for DETR**  
-  Shilong Liu, Feng Li, Hao Zhang, Xiao Yang, Xianbiao Qi, Hang Su, Jun Zhu, Lei Zhang   
-  International Conference on Learning Representations (ICLR) 2022  
-  [[Paper]](https://arxiv.org/abs/2201.12329) [[Code]](https://github.com/SlongLiu/DAB-DETR)
-- **DN-DETR: Accelerate DETR Training by Introducing Query DeNoising**  
-  Feng Li*, Hao Zhang*, Shilong Liu, Jian Guo, Lionel M. Ni, Lei Zhang    
-  IEEE Conference on Computer Vision and Pattern Recognition (CVPR) 2022.  
-  [[Paper]](https://arxiv.org/abs/2203.01305) [[Code]](https://github.com/FengLi-ust/DN-DETR)
-- **DINO: DETR with Improved DeNoising Anchor Boxes for End-to-End Object Detection**   
-  Hao Zhang*, Feng Li*, Shilong Liu*, Lei Zhang, Hang Su, Jun Zhu, Lionel M. Ni, Heung-Yeung Shum  
-  arxiv 2022   
-  [[paper]](https://arxiv.org/abs/2203.03605) [[code]](https://github.com/IDEACVR/DINO)
-
 ## LICENSE
-Team DETR is released under the Apache 2.0 license. Please see the [LICENSE](LICENSE) file for more information.
+SegDoctor is released under the Apache 2.0 license. Please see the [LICENSE](LICENSE) file for more information.
 
 Copyright (c) VIPA. All rights reserved.
 
