@@ -186,7 +186,7 @@ def main(args):
     if args.use_ddp:
         model = UNet_ResNet(num_classes=args.num_classes).to(device)
    
-        state_dict = torch.load(args.load_weight)   # 54.0
+        state_dict = torch.load(args.load_weight)
         
         state_dict = {k.replace('module.', ''):v for k, v in state_dict.items()}
         print('Load State Dict', model.load_state_dict(state_dict, strict=False))        
@@ -199,10 +199,9 @@ def main(args):
 
     # 优化器,学习率策略，损失函数
     if args.use_ddp:
-        # optimizer = torch.optim.Adam(model.module.parameters(), lr=args.lr)
         optimizer = torch.optim.SGD(model.module.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-3)
     else:
-        optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-3)
         
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs * len(train_loader), eta_min=0)
     
