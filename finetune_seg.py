@@ -18,7 +18,7 @@ import argparse
 warnings.filterwarnings("ignore")
 
 from train_utils import *
-from spixel_loss import *
+from model.spixel_loss import *
 
 def get_train_transforms(args):
     return A.Compose([
