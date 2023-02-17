@@ -8,8 +8,6 @@ from dataset import SegDataset
 from metric import Evaluator
 from model.unet import UNet
 from model.unet_resnet import UNet_ResNet
-from model.deeplabv3_plus import DeepLab
-from model.pspnet import PSPNet
 from torch.nn import CrossEntropyLoss
 import torch.distributed as dist
 from torch.utils.data import DataLoader
@@ -187,13 +185,9 @@ def main(args):
 
     # 初始化模型
     if args.use_ddp:
-        # model = UNet_ResNet(num_classes=args.num_classes).to(device)
-        model = DeepLab(num_classes=args.num_classes).to(device)
-        # model = PSPNet(classes=args.num_classes).to(device)
-        
-        # state_dict = torch.load('runs/weights/UNet_ResNet_best_512.pth')   # 54.0
-        state_dict = torch.load('runs/weights/DeepLab_best_512.pth')   # 67.3
-        # state_dict = torch.load('runs/weights/PSPNet_best_512.pth')   # 68.1
+        model = UNet_ResNet(num_classes=args.num_classes).to(device)
+   
+        state_dict = torch.load(args.load_weight)   # 54.0
         
         state_dict = {k.replace('module.', ''):v for k, v in state_dict.items()}
         print('Load State Dict', model.load_state_dict(state_dict, strict=False))        
@@ -250,6 +244,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_classes', type=int, default=21)
     parser.add_argument('--print_freq', type=int, default=100)
     parser.add_argument('--img_size', type=list, default=[512, 512])
+    parser.add_argument('--load_weight', type=str, default='runs/weights/UNet_ResNet_best_512.pth')
 
     # result save-setting
     parser.add_argument('--log_save_dir', type=str, default='./runs/logs/')
