@@ -34,43 +34,6 @@ VOCdevkit/
     └── SegnebtatuibsCkassAug/
 ```
 
-### Evaluation
-
-You can download our pre-trained models ([百度网盘](https://pan.baidu.com/s/1ZLPAB6Mg0jVSKxECq4f_Jg?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1vL7XnQ37W7wNF1flTm9r8vVjx_YbBZko?usp=share_link))  or use your own for evaluation. 
-
-In default, we divide the queries into three groups, with the proportion of 65%, 25%, and 15%, corresponding to relative scales of (0, 0.2], (0.2, 0.4], and (0.4, 1], respectively. `--q_splits` is to set the proportion of each group. `--matcher` has two options, `ori`(original HungarianMatcher) and `team`(TeamHungarianMatcher).
-
-**Note:** The evaluation result under different batch sizes will have slight differences. We used 2 GPUs, and the batch size (per GPU) we used to train each model is marked on the checkpoint filename (e.g., b8, b6). If you use the checkpoints we provide for evaluation and want to get the same results as we report, please keep the same setting as ours.
-
-```bash
-# Team-DAB-DETR and Team-DN-DETR
-# multi-gpu
-python -m torch.distributed.launch --nproc_per_node=2 main.py \
-  --coco_path /path/to/your/COCODIR \
-  --resume /path/to/your/checkpoint \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --matcher team \
-  --q_splits 65 20 15 \
-  --eval
-
-# single-gpu
-python main.py \
-  --coco_path /path/to/your/COCODIR \
-  --resume /path/to/your/checkpoint \
-  --output_dir /path/to/your/output/dir \
-  --batch_size 8 \
-  --matcher team \
-  --q_splits 65 20 15 \
-  --eval
-
-# --------------------------------------------
-
-# Team-DINO
-# You need to make config and .sh files in advance.
-# multi-gpu
-bash scripts/DINO_4scale_1stage_team_r50_e12_eval.sh /path/to/your/COCODIR /path/to/your/output/dir /path/to/your/checkpoint
-
 ```
 
 ### Training
