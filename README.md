@@ -17,15 +17,12 @@ A synopsis of our proposed methodology, which is comprised of two facets: the se
 ## Usage
 
 ### Installation
-Our code contains three projects, Team-DAB-DETR, Team-DN-DETR, and Team-DINO, based on DAB-DETR, DN-DETR, and DINO, respectively, and no extra dependency is needed. So each of our projects can be installed the same way as its codebase. 
-
-[[installation of DAB-DETR]](https://github.com/IDEA-Research/DAB-DETR)
-
-[[installation of DN-DETR]](https://github.com/IDEA-Research/DN-DETR)
-
-[[installation of DINO]](https://github.com/IDEA-Research/DINO)
-
-Our experimental environment is `python 3.7 & pytorch 1.11.0+cu113`. We strongly recommend you use `pytorch >= 1.11.0` for its less GPU memory consumption. 
+Our experimental environment is `python 3.8 & pytorch 1.11.0+cu113`. We strongly recommend you use `pytorch >= 1.11.0` for its less GPU memory consumption. 
+```python
+  argparse
+  albumentations == 1.3.0
+  numpy
+```
 
 ### Dataset
 [COCO2017](https://cocodataset.org/) is used to validate our method. The directory structure is as follows:
