@@ -3,7 +3,7 @@ MODEL DOCTOR FOR DIAGNOSING AND TREATING SEGMENTATION ERROR
 
 Official implementation
 
-[[paper link](https://arxiv.org/abs/2302.07116)]
+[[paper link]()]
 
 ## Abstract
 
