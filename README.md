@@ -17,7 +17,7 @@ A synopsis of our proposed methodology, which is comprised of two facets: the se
 ## Usage
 
 ### Installation
-Our experimental environment is `python 3.8 & pytorch 1.11.0+cu113`. We strongly recommend you use `pytorch >= 1.11.0` for its less GPU memory consumption. 
+Our experimental environment is `python 3.8 & pytorch 1.12.1+cu113`. We strongly recommend you use `pytorch >= 1.11.0` for its less GPU memory consumption. 
 ```python
   argparse
   albumentations == 1.3.0
