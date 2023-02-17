@@ -93,7 +93,7 @@ def train_model(model, criterion, optimizer, lr_scheduler=None, train_loader=Non
             
             loss = 0
             subloss = 0
-            for feat, ps in zip([xs[0]], [8]):   # pspnet 8 deeplab 8 unet 16
+            for feat, ps in zip([xs[0]], [16]):   # pspnet 8 deeplab 8 unet 16
                 subloss = subloss + link_loss3(labels.squeeze().long(), pred, feat, ps=ps)
             # print(subloss)
             loss = loss + subloss + criterion(out.float(), labels.long())
