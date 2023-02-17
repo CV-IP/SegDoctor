@@ -1,4 +1,4 @@
-TEAM DETR: GUIDE QUERIES AS A PROFESSIONAL TEAM IN DETECTION TRANSFORMERS
+MODEL DOCTOR FOR DIAGNOSING AND TREATING SEGMENTATION ERROR
 --------
 
 Official implementation
@@ -7,39 +7,13 @@ Official implementation
 
 ## Abstract
 
-Recent proposed DETR variants have made tremendous progress in various scenarios due to their streamlined processes and remarkable performance. However, the learned queries usually explore the global context to generate the final set prediction, resulting in redundant burdens and unfaithful results. More specifically, a query is commonly responsible for objects of different scales and positions, which is a challenge for the query itself, and will cause spatial resource competition among queries. To alleviate this issue, we propose Team DETR, which leverages query collaboration and position constraints to embrace objects of interest more precisely. We also dynamically cater to each query member's prediction preference, offering the query better scale and spatial priors. In addition, the proposed Team DETR is flexible enough to be adapted to other existing DETR variants without increasing parameters and calculations. Extensive experiments on the COCO dataset show that Team DETR achieves remarkable gains, especially for small and large objects. 
-
+Despite the remarkable progress in semantic segmentation tasks with the advancement of deep neural networks, existing U-shaped hierarchical typical segmentation networks still suffer from local misclassification of categories and inaccurate target boundaries. In an effort to alleviate this issue, we propose a Model Doctor for semantic segmentation problems. The Model Doctor is designed to diagnose the aforementioned problems in existing pre-trained models and treat them without introducing additional data, with the goal of refining the parameters to achieve better performance. Extensive experiments on several benchmark datasets demonstrate the effectiveness of our method.
 
 ## Framework
 
 ![](./figures/framework.png)
 
 The framework of the proposed Team DETR, which is based on the basic architecture of DAB-DETR. The CNN backbone is used to extract image features, which are then fused by the transformer encoder. The decoder utilizes several learned queries to match objects for the image features. A query is represented as an anchor box (x, y, w, h) and is dynamically updated based on the offset (Δx, Δy, Δw, Δh) predicted by each layer of the decoder. Building upon this, we introduce a query teamwork approach in which the queries are grouped, and each group is responsible for objects within a specific scale range. To avoid resource competition, the management area of each query is limited. Furthermore, the prediction preferences of each query are dynamically extracted, and the anchor is updated accordingly.
-
-## Model Zoo
-
-Without increasing parameters and calculations, our query teamwork can be easily integrated into DAB-based DETRs, including DAB-DETR, DN-DETR and the single-stage DINO.
-
-[[model zoo in 百度网盘]](https://pan.baidu.com/s/1ZLPAB6Mg0jVSKxECq4f_Jg?pwd=team)（提取码team）
-
-[[model zoo in Google Drive]](https://drive.google.com/drive/folders/1vL7XnQ37W7wNF1flTm9r8vVjx_YbBZko?usp=share_link)
-
-| Model                  | w/ Team DETR | Epochs |    AP    | AP<font size=2>*s*</font> | AP<font size=2>*m*</font> | AP<font size=2>*l*</font> | Params |                       checkpoint & log                       |
-| :--------------------- | :----------: | :----: | :------: | :-----------------------: | :-----------------------: | :-----------------------: | :----: | :----------------------------------------------------------: |
-| DN-DETR-R50            |              |   12   |   37.3   |           17.2            |           40.1            |           55.6            |  44M   |                                                              |
-| DN-DETR-R50            |      √       |   12   | **37.7** |           18.0            |           40.0            |           56.8            |  44M   | [百度网盘](https://pan.baidu.com/s/1fc4144ERAjR4BpE9AjtasA?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1acSG-EuFx6UiehX1q63XAtu1EF3s29-m?usp=share_link) |
-| DAB-DETR-R50           |              |   12   |   33.7   |           15.3            |           36.5            |           49.7            |  44M   |                                                              |
-| DAB-DETR-R50           |      √       |   12   | **35.3** |           17.3            |           37.5            |           52.9            |  44M   | [百度网盘](https://pan.baidu.com/s/1kW9fpS2EYq3Q6KSchIU14A?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1MGel4BKzOrlYlDnuKxLeOJYkC5O58kF4?usp=share_link) |
-| DAB-DETR-R50           |              |   50   |   42.2   |           22.5            |           45.9            |           60.2            |  44M   |                                                              |
-| DAB-DETR-R50           |      √       |   50   | **43.0** |           24.4            |           46.1            |           62.6            |  44M   | [百度网盘](https://pan.baidu.com/s/1wR5lrD1Ji5q7F8eRAASrmg?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1clGOqBRioL4UVph684pTv4UsqQ47AmKJ?usp=share_link) |
-| DAB-DETR-R101          |              |   12   |   36.1   |           17.3            |           39.5            |           52.5            |  63M   |                                                              |
-| DAB-DETR-R101          |      √       |   12   | **37.4** |           18.4            |           40.3            |           55.5            |  63M   | [百度网盘](https://pan.baidu.com/s/1Nv6Tk8GZDVuMppFZV7DXnQ?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1dQ4Pqt4FgJB5z48juNRcxzJck2bAV4fa?usp=share_link) |
-| DAB-DETR-R101          |              |   50   |   43.3   |           24.0            |           47.1            |           61.2            |  63M   |                                                              |
-| DAB-DETR-R101          |      √       |   50   | **44.1** |           25.0            |           47.1            |           63.7            |  63M   | [百度网盘](https://pan.baidu.com/s/1606YBaEyjX4vgBZJ2GptpQ?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1jmTpzsdpWaYTVoBjysBUxyk4Ln6I03TD?usp=share_link) |
-| DINO-4scale-1stage-R50 |              |   12   |   44.5   |           24.2            |           48.0            |           61.2            |  47M   |                                                              |
-| DINO-4scale-1stage-R50 |      √       |   12   | **46.3** |           28.6            |           48.9            |           61.2            |  47M   | [百度网盘](https://pan.baidu.com/s/14NJTm3LLNWXHVkRG8JQ6Hg?pwd=team) / [Google Drive](https://drive.google.com/drive/folders/1PsiEGb1EFEpEeUrZEspwEmtYPYerVfS8?usp=share_link) |
-
-**Note:** The result of DAB-DETR-R50 w/ Team-DETR under the 50-epoch setting is different from which we report in the paper because we lost this checkpoint, and here is the one we retrained.
 
 ## Usage
 
