@@ -58,7 +58,7 @@ The pretrained model [[百度网盘]](https://pan.baidu.com/s/1967fppZDAtRyIJ9HL
    --sync_bn \
    --num_classes 21 \
    --batch_size 8 \
-# --------------------------------------------
+   --load_weight path_to_model_weight \
 
 ```
 
