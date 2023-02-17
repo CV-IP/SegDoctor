@@ -38,8 +38,6 @@ VOCdevkit/
 
 ### Training
 
-In default, we divide the queries into three groups, with the proportion of 65%, 25%, and 15%, corresponding to relative scales of (0, 0.2], (0.2, 0.4], and (0.4, 1], respectively. `--q_splits` is to set the proportion of each group. `--matcher` has two options, `ori`(original HungarianMatcher) and `team`(TeamHungarianMatcher). If you want to change the responsible scale range of each group, you can modify matcher.py for Team-DAB-DETR and Team-DN-DETR or the config file for Team-DINO.
-
 ```bash
  CUDA_VISIBLE_DEVICES="0" torchrun \
    --nproc_per_node=1 \
