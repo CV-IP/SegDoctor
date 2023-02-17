@@ -11,7 +11,7 @@ Despite the remarkable progress in semantic segmentation tasks with the advancem
 
 ## Framework
 
-![](./figures/framework.png)
+![](./fig/framework.png)
 
 The framework of the proposed Team DETR, which is based on the basic architecture of DAB-DETR. The CNN backbone is used to extract image features, which are then fused by the transformer encoder. The decoder utilizes several learned queries to match objects for the image features. A query is represented as an anchor box (x, y, w, h) and is dynamically updated based on the offset (Δx, Δy, Δw, Δh) predicted by each layer of the decoder. Building upon this, we introduce a query teamwork approach in which the queries are grouped, and each group is responsible for objects within a specific scale range. To avoid resource competition, the management area of each query is limited. Furthermore, the prediction preferences of each query are dynamically extracted, and the anchor is updated accordingly.
 
