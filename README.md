@@ -34,8 +34,6 @@ VOCdevkit/
     └── SegnebtatuibsCkassAug/
 ```
 
-```
-
 ### Training
 
 ```bash
