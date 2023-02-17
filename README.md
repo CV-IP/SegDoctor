@@ -36,7 +36,7 @@ VOCdevkit/
     └── SegmentationClassAug/
 ```
 
-The pretrained model [[百度网盘]](https://pan.baidu.com/s/1967fppZDAtRyIJ9HLM13Ag?pwd=dk9k).
+The pretrained model in [[百度网盘]](https://pan.baidu.com/s/1967fppZDAtRyIJ9HLM13Ag?pwd=dk9k).
 
 ### Training
 
