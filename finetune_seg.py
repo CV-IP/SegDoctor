@@ -184,12 +184,7 @@ def main(args):
 
     # 初始化模型
     if args.use_ddp:
-        model = UNet_ResNet(num_classes=args.num_classes).to(device)
-   
-        state_dict = torch.load(args.load_weight)
-        
-        state_dict = {k.replace('module.', ''):v for k, v in state_dict.items()}
-        print('Load State Dict', model.load_state_dict(state_dict, strict=False))        
+        model = UNet_ResNet(num_classes=args.num_classes).to(device)     
 
         if args.sync_bn:
             model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
