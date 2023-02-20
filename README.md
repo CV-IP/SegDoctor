@@ -3,7 +3,7 @@ MODEL DOCTOR FOR DIAGNOSING AND TREATING SEGMENTATION ERROR
 
 Official implementation
 
-[[paper link]()]
+[[paper link](https://arxiv.org/abs/2302.08980)]
 
 ## Abstract
 
@@ -58,7 +58,6 @@ The pretrained model in [[百度网盘]](https://pan.baidu.com/s/1967fppZDAtRyIJ
    --sync_bn \
    --num_classes 21 \
    --batch_size 8 \
-   --load_weight path_to_model_weight \
 
 ```
 
